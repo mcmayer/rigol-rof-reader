@@ -7,12 +7,9 @@ import qualified Data.ByteString.Lazy   as BSL
 import           Data.Int               (Int16, Int32, Int64)
 import           Data.List              (intercalate)
 import           Data.Word              (Word16, Word32, Word64)
-import           Debug.Trace            (trace)
 import           System.Environment     (getArgs)
 import           System.Exit            (exitFailure, exitSuccess)
 import           System.IO              (hPutStrLn, stderr)
-
-tr a = trace (show a) a
 
 data Header = Header {
     len     :: Word16,
@@ -26,18 +23,18 @@ type Row = (Double, Double)
 getHeader :: G.Get Header
 getHeader = do
     file_id <- G.getWord32be
-    unless (file_id == 1380926976) (error "Bad header")
+    unless (file_id == 1380926976) (error "Bad header (ID wrong)")
     unk1 <- G.getWord8
     unk2 <- G.getWord8
     len <- G.getWord16le
     zero <- G.getWord32be
-    unless (zero == 0) (error "Bad header")
+    unless (zero == 0) (error "Bad header (field not zero)")
     unk4 <- G.getWord16le
     unk5 <- G.getWord16le
     period <- G.getWord32le
     npoints <- G.getWord32le
     npoints' <- G.getWord32le
-    unless (npoints == npoints') (error "Bad header")
+    --unless (npoints == npoints') (error $ "Bad header (npoints mismatch):" ++ show npoints ++ " vs. " ++ show npoints')
     return $! Header len period npoints
 
 getRow :: G.Get Row
