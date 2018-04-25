@@ -20,7 +20,7 @@ mean(i[15:220] * u[15:220])
 
 pdf("RXM-GNSS-GM-current.pdf")
 plot(data[,"time"], data[,"I2"] * 1000, type="l", xlab="t/s", ylab="I/mA")
-title("RXM-GNSS-GM current")
+title("RXM-GNSS-GM current 'Always Locate'")
 abline(h=31, col="grey")
 abline(h=9.4, col="grey")
 #
